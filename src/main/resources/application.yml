@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+alibaba:
+  cloud:
+    access-key: "${ALIBABA_CLOUD_ACCESS_KEY_ID}"
+    secret-key: "${ALIBABA_CLOUD_ACCESS_KEY_SECRET}"
+    region-id: cn-hangzhou
+  ai:
+    bailian:
+      model: qwen-max
+      api-key: "${BAILIAN_API_KEY}"
+
+logging:
+  level:
+    com.example.molgenie: INFO
