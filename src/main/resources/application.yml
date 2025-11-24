@@ -6,16 +6,12 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-
-alibaba:
-  cloud:
-    access-key: "${ALIBABA_CLOUD_ACCESS_KEY_ID}"
-    secret-key: "${ALIBABA_CLOUD_ACCESS_KEY_SECRET}"
-    region-id: cn-hangzhou
   ai:
-    bailian:
-      model: qwen-max
-      api-key: "${BAILIAN_API_KEY}"
+    dashscope:
+      api-key: sk-4f654636abde48598c13f005740f8233
+      options:
+        model: qwen-max   # ← 关键！必须放在 options 下你使用的模型，如 qwen-plus, qwen-turbo
+
 
 logging:
   level:
