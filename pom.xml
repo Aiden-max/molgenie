@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- 使用 Spring Boot 官方 parent（更通用） -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -15,7 +14,7 @@
     <groupId>com.example</groupId>
     <artifactId>molgenie</artifactId>
     <version>1.0.0</version>
-    <name>MolGenie Pro</name>
+    <name>MolGenie</name>
     <description>Multi-Agent Drug Discovery with Spring AI Alibaba Graph</description>
 
     <properties>

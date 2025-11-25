@@ -45,7 +45,6 @@ public class DrugDiscoveryController {
             }
             initialState.put("user_query", query);
             CompiledGraph compile = drugDiscoveryGraph.compile();
-            Optional<OverAllState> call = compile.call(initialState);
             return ResponseEntity.ok(compile.call(initialState).get().data().get("final_response"));
 
         } catch (Exception e) {

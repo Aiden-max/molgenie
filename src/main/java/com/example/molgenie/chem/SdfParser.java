@@ -1,10 +1,9 @@
-package com.example.molgenie.chem; // 请根据你的实际包名调整
+package com.example.molgenie.chem;
 
-import org.openscience.cdk.DefaultChemObjectBuilder; // 或 SilentChemObjectBuilder
+import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.io.iterator.IteratingSDFReader; // 确保导入正确
-import org.openscience.cdk.smiles.SmilesGenerator; // 确保导入 SmilesGenerator
-// import org.openscience.cdk.tools.manipulator.AtomContainerManipulator; // 如果需要计算 MW 等
+import org.openscience.cdk.io.iterator.IteratingSDFReader;
+import org.openscience.cdk.smiles.SmilesGenerator;
 
 import org.springframework.stereotype.Component;
 
