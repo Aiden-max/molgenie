@@ -31,6 +31,7 @@ public class ChatClientConfig {
     @Bean
     public ChatClient chatClient(ChatModel chatModel) {
         return ChatClient.builder(chatModel)
+                .defaultSystem("你是个")
                 .defaultAdvisors(new SimpleLoggerAdvisor())
                 .build();
     }
