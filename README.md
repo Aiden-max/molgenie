@@ -1,6 +1,6 @@
 # MolGenie - 药物发现智能助手
 
-MolGenie 是一个基于人工智能的药物发现辅助系统，利用通义千问大模型和多智能体架构，帮助研究人员设计、生成、验证和分析药物分子。
+MolGenie 是一个基于人工智能的药物发现辅助系统，利用大模型和多智能体架构，帮助研究人员设计、生成、验证和分析药物分子。
 
 ## 功能特性
 
@@ -44,7 +44,7 @@ POST `/apiGraph/discover`
 ## 部署说明
 
 1. 确保已安装Java 17+
-2. 配置DashScope API Key到 [application.yml](file://C:\Users\userz\Desktop\new\molgenie\src\main\resources\application.yml)
+2. 配置DashScope API Key到 application.yml
 3. 运行命令启动服务：
    ```
    ./mvnw spring-boot:run
