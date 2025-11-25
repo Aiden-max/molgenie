@@ -35,6 +35,8 @@ POST `/apiGraph/discover`
 参数：
 - `query` (可选)：用户查询文本
 - `file` (可选)：SDF格式的分子文件
+结果：
+- ![img.png](img.png)
 
 响应：
 - 返回处理结果和药物研发建议
