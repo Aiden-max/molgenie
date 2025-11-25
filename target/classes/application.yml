@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  ai:
+    dashscope:
+      api-key: sk-4f654636abde48598c13f005740f8233  # 你的 DashScope API Key
+      options:
+        model: qwen3-max
+        temperature: 0.7
+        max-tokens: 2000
+        top-p: 0.9
+
