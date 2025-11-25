@@ -8,11 +8,10 @@ spring:
       max-request-size: 10MB
   ai:
     dashscope:
-      api-key: sk-4f654636abde48598c13f005740f8233
+      api-key: sk-4f654636abde48598c13f005740f8233  # 你的 DashScope API Key
       options:
-        model: qwen-max   # ← 关键！必须放在 options 下你使用的模型，如 qwen-plus, qwen-turbo
+        model: qwen3-max
+        temperature: 0.7
+        max-tokens: 2000
+        top-p: 0.9
 
-
-logging:
-  level:
-    com.example.molgenie: INFO

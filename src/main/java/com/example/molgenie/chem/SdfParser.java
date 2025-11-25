@@ -14,16 +14,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger; // 可选
+import java.util.logging.Logger;
 
 @Component
 public class SdfParser {
 
-    private static final Logger logger = Logger.getLogger(SdfParser.class.getName()); // 可选
+    private static final Logger logger = Logger.getLogger(SdfParser.class.getName());
 
     /**
-     * 解析 InputStream 中的 SDF 数据并返回 MoleculeRecord 列表。
-     * 兼容旧版返回值类型。
      *
      * @param inputStream 包含 SDF 数据的 InputStream。
      * @return 包含解析出的 MoleculeRecord 的列表。
@@ -32,8 +30,7 @@ public class SdfParser {
     public List<MoleculeRecord> parseSdf(InputStream inputStream) throws Exception {
         List<MoleculeRecord> records = new ArrayList<>();
 
-        // 创建 SMILES 生成器，这里使用 unique 模式
-        SmilesGenerator smiGen = SmilesGenerator.unique(); // 或 .absolute(), .isomeric() 根据需求
+        SmilesGenerator smiGen = SmilesGenerator.unique();
 
         // 使用 try-with-resources 管理 IteratingSDFReader
         try (IteratingSDFReader reader = new IteratingSDFReader(
@@ -84,9 +81,8 @@ public class SdfParser {
             }
 
         } catch (Exception e) {
-            // 处理 Reader 初始化或流相关的错误
             logger.severe("Failed to parse SDF from InputStream. Error: " + e.getMessage());
-            throw e; // 重新抛出原始异常或包装后抛出
+            throw e;
         }
 
         logger.info("Parsed " + records.size() + " molecules from SDF stream.");

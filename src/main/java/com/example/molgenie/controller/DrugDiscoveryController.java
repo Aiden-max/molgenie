@@ -1,53 +1,56 @@
 package com.example.molgenie.controller;
 
-import com.example.molgenie.agent.*;
-import com.example.molgenie.chem.MoleculeRecord;
+
+import com.alibaba.cloud.ai.graph.CompiledGraph;
+import com.alibaba.cloud.ai.graph.OverAllState;
+import com.alibaba.cloud.ai.graph.StateGraph;
 import com.example.molgenie.chem.SdfParser;
-import com.example.molgenie.graph.DrugDiscoveryState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/apiGraph")
 public class DrugDiscoveryController {
 
     @Autowired
-    private PlannerAgent planner;
+    @Qualifier("drugDiscoveryGraph")
+    private StateGraph drugDiscoveryGraph;
+
     @Autowired
-    private GeneratorAgent generator;
-    @Autowired
-    private ValidatorAgent validator;
-    @Autowired
-    private SummarizerAgent summarizer;
-    @Autowired
+    @Qualifier("sdfParser")
     private SdfParser sdfParser;
 
+
     @PostMapping("/discover")
-    public ResponseEntity<String> discover(
+    public ResponseEntity<Object> discover(
             @RequestParam(required = false) String query,
             @RequestParam(required = false) MultipartFile file) {
 
-        DrugDiscoveryState state = new DrugDiscoveryState();
-
+        Map<String, Object> initialState = new HashMap<>();
         try {
             if (file != null) {
-                state.setSdfMolecules(sdfParser.parseSdf(file.getInputStream()));
-                state.setTaskType(DrugDiscoveryState.TaskType.ANALYZE_SDF);
-            } else {
-                state.setUserQuery(query);
-                planner.route(state);
-                if (state.getTaskType() == DrugDiscoveryState.TaskType.GENERATE) {
-                    generator.generate(state);
-                    validator.validate(state);
-                }
+                List<com.example.molgenie.chem.MoleculeRecord> molecules = sdfParser.parseSdf(file.getInputStream());
+                 initialState.put("sdf_molecules", molecules);
             }
-            summarizer.summarize(state);
-            return ResponseEntity.ok(state.getFinalResponse());
+            initialState.put("user_query", query);
+            CompiledGraph compile = drugDiscoveryGraph.compile();
+            Optional<OverAllState> call = compile.call(initialState);
+            return ResponseEntity.ok(compile.call(initialState).get().data().get("final_response"));
+
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error during graph execution: " + e.getMessage());
         }
     }
 }

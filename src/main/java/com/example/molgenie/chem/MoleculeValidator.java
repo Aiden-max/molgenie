@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class MoleculeValidator {
 
     private final SmilesParser parser = new SmilesParser(SilentChemObjectBuilder.getInstance());
-    private final WeightDescriptor weightDesc = new WeightDescriptor(); // <-- 修改 2
+    private final WeightDescriptor weightDesc = new WeightDescriptor();
 
     public ValidationResult validate(String smiles) {
         if (smiles == null || smiles.trim().isEmpty()) {
@@ -33,11 +33,11 @@ public class MoleculeValidator {
             hadder.addImplicitHydrogens(mol);
             AtomContainerManipulator.convertImplicitToExplicitHydrogens(mol);
 
-            // 3. 计算分子量 (CDK 2.9 返回 IDescriptorResult)
+            // 3. 计算分子量
             DescriptorValue weightValue = weightDesc.calculate(mol);
             Double mw = extractDoubleValue(weightValue);
 
-            // 4. 估算 LogP (使用你提供的简单规则)
+            // 4. 估算 LogP
             Double logP = null;
             try {
                 double lp = estimateLogP(smiles);
@@ -46,6 +46,8 @@ public class MoleculeValidator {
                 }
             } catch (Exception ignored) {
                 // LogP 估算失败
+                logP = null;
+                System.err.println("LogP estimation failed for SMILES: " + smiles);
             }
 
             // 5. 验证 Lipinski-like 规则
@@ -83,21 +85,17 @@ public class MoleculeValidator {
         if (dv == null) {
             return null;
         }
-        // 检查是否有计算异常 (这是一个好习惯)
         if (dv.getException() != null) {
             System.err.println("Descriptor calculation error for " + (dv.getNames() != null && dv.getNames().length > 0 ? dv.getNames()[0] : "Unknown") + ": " + dv.getException().getMessage());
             return null;
         }
 
-        // 在 CDK 2.x 中，getValue() 返回 IDescriptorResult
         IDescriptorResult result = dv.getValue();
         if (result == null) {
             return null;
         }
 
-        // 检查具体的结果类型
         if (result instanceof DoubleResult dr) {
-            // 在 CDK 2.x 中，DoubleResult 使用 doubleValue() 获取值
             double v = dr.doubleValue();
             return Double.isNaN(v) || Double.isInfinite(v) ? null : v;
         } else if (result instanceof DoubleArrayResult dar) {
@@ -107,19 +105,16 @@ public class MoleculeValidator {
                 return Double.isNaN(v) || Double.isInfinite(v) ? null : v;
             }
         }
-        // 如果结果类型不符合预期，打印警告
-        System.err.println("Unexpected descriptor result type for " + (dv.getNames() != null && dv.getNames().length > 0 ? dv.getNames()[0] : "Unknown") + ": " + result.getClass().getName());
         return null;
     }
 
 
-    // ===== 自定义 LogP 估算 (保持你的原始逻辑) =====
 
     private double estimateLogP(String s) {
         int c = count(s, 'C') + count(s, 'c');
         int o = count(s, 'O') + count(s, 'o');
         int n = count(s, 'N') + count(s, 'n');
-        int cl = countStr(s, "Cl") + countStr(s, "cl"); // 兼容大小写
+        int cl = countStr(s, "Cl") + countStr(s, "cl");
         return c * 0.5 - o * 0.7 - n * 0.5 + cl * 0.7;
     }
 
@@ -138,6 +133,5 @@ public class MoleculeValidator {
         return count;
     }
 
-    // ===== 结果记录类 =====
     public record ValidationResult(String smiles, Float mw, Float logP, boolean isValid, String reason) {}
 }
