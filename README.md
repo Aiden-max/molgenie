@@ -7,6 +7,9 @@ MolGenie 是一个面向药物研发场景的智能助手，基于 **多智能�
 - 将研究报告（Word/Excel 等）中的分子信息整理为可检索的化学知识库
 
 ---
+<img width="1003" height="514" alt="image" src="https://github.com/user-attachments/assets/44b969c2-e333-4deb-9599-47d6a85fc171" />
+<img width="995" height="434" alt="image" src="https://github.com/user-attachments/assets/5094bf26-268f-45c7-a460-c40f79701cd6" />
+
 
 ## 功能概览
 
