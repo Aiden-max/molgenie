@@ -17,15 +17,14 @@ public class PlannerAgent {
 
 
     public void route(DrugDiscoveryState state) {
-        String prompt = """
-            用户请求："{query}"
-            如果涉及“设计”、“生成”、“创建新分子”，回答 GENERATE；
-            如果提到“SDF”、“上传”、“分析这批”，回答 ANALYZE_SDF。
-            只输出一个词。
-            """;
+        String prompt =
+                "User request: \"{query}\"\n" +
+                "If the request is about designing/generating/creating new molecules, answer GENERATE.\n" +
+                "If the request mentions SDF/upload/analyzing a batch, answer ANALYZE_SDF.\n" +
+                "Output exactly one word.";
 
-        String res = chatClient.prompt() //
-                .user(u -> u.text(prompt).params(Map.of("query", state.getUserQuery())))
+        String res = chatClient.prompt()
+                .user(u -> u.text(prompt).params(Map.of("query", state.getUserQuery() == null ? "" : state.getUserQuery())))
                 .call()
                 .content()
                 .trim();

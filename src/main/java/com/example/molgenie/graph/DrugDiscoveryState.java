@@ -2,6 +2,7 @@ package com.example.molgenie.graph;
 
 import com.example.molgenie.chem.MoleculeRecord;
 import com.example.molgenie.chem.MoleculeValidator;
+import com.example.molgenie.kb.KbMolecule;
 
 import java.util.*;
 
@@ -13,6 +14,7 @@ public class DrugDiscoveryState {
     private List<MoleculeValidator.ValidationResult> validationResults = new ArrayList<>();
     private String finalResponse;
     private String next;
+    private List<KbMolecule> kbMatches = new ArrayList<>();
 
     public enum TaskType { GENERATE, ANALYZE_SDF }
 
@@ -31,4 +33,6 @@ public class DrugDiscoveryState {
     public void setFinalResponse(String finalResponse) { this.finalResponse = finalResponse; }
     public String getNext() { return next; }
     public void setNext(String next) { this.next = next; }
+    public List<KbMolecule> getKbMatches() { return kbMatches; }
+    public void setKbMatches(List<KbMolecule> kbMatches) { this.kbMatches = kbMatches; }
 }

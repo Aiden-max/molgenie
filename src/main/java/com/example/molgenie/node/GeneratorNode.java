@@ -24,13 +24,11 @@ public class GeneratorNode implements NodeAction {
             }
 
             String userQuery = (String) state.value("user_query").orElse("");
-            String prompt = """
-                    你是一个计算化学家。请根据以下需求生成 3 个候选小分子的 SMILES 字符串，每行一个：
-                    
-                    %s
-                    
-                    只输出 SMILES，不要编号、不要解释、不要空行。
-                    """.formatted(userQuery);
+            String prompt =
+                    "You are a computational chemist.\n" +
+                    "Generate 3 candidate small-molecule SMILES strings based on the following request, one per line:\n\n" +
+                    userQuery + "\n\n" +
+                    "Output SMILES only. No numbering. No explanations. No blank lines.";
 
             ChatResponse response = chatClient.prompt(prompt).call().chatResponse();
             String output = response.getResult().getOutput().getText();

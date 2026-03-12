@@ -19,6 +19,9 @@
 
     <properties>
         <java.version>17</java.version>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-ai-alibaba.version>1.0.0.4</spring-ai-alibaba.version>
         <cdk.version>2.11</cdk.version>
         <jackson.version>2.17.0</jackson.version>
@@ -29,6 +32,20 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Document parsing: Word/Excel (OOXML) -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.4.1</version>
+        </dependency>
+
+        <!-- Vector DB: Milvus -->
+        <dependency>
+            <groupId>io.milvus</groupId>
+            <artifactId>milvus-sdk-java</artifactId>
+            <version>2.4.10</version>
         </dependency>
 
         <!-- Spring AI Alibaba: DashScope (Qwen) -->
@@ -45,6 +62,13 @@
             <version>${spring-ai-alibaba.version}</version>
         </dependency>
 
+        <!-- DashScope Java SDK (latest) -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dashscope-sdk-java</artifactId>
+            <version>2.22.7</version>
+        </dependency>
+
         <!-- Chemistry: CDK for SDF/SMILES -->
         <dependency>
             <groupId>org.openscience.cdk</groupId>
@@ -58,11 +82,7 @@
             <version>${cdk.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.openscience.cdk</groupId>
-            <artifactId>cdk-bundle</artifactId>
-            <version>2.11</version>
-        </dependency>
+        <!-- NOTE: cdk-bundle already included above; avoid duplicate entries -->
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -107,6 +127,14 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
